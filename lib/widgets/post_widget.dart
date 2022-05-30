@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../post.dart';
@@ -12,8 +13,15 @@ class PostWidget extends StatefulWidget {
 
 class _PostWidgetState extends State<PostWidget> {
   TextStyle _textStyle = TextStyle(fontSize: 17);
-
   var iconsColor = Colors.pink[800];
+
+  final listOfImages = [
+    'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+    'https://media.istockphoto.com/photos/picturesque-morning-in-plitvice-national-park-colorful-spring-scene-picture-id1093110112?k=20&m=1093110112&s=612x612&w=0&h=3OhKOpvzOSJgwThQmGhshfOnZTvMExZX2R91jNNStBY=',
+    'https://images.unsplash.com/photo-1420593248178-d88870618ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NXx8fGVufDB8fHx8&w=1000&q=80',
+    'https://media.istockphoto.com/photos/taj-mahal-mausoleum-in-agra-picture-id1146517111?k=20&m=1146517111&s=612x612&w=0&h=vHWfu6TE0R5rG6DJkV42Jxr49aEsLN0ML-ihvtim8kk=',
+    'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bWFufGVufDB8fDB8fA%3D%3D&w=1000&q=80',
+  ];
 
   @override
   void initState() {
@@ -48,11 +56,9 @@ class _PostWidgetState extends State<PostWidget> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       margin: EdgeInsets.only(bottom: 5),
-      //color: Colors.grey[300],
       child: ListTile(
         contentPadding: EdgeInsets.all(0),
         leading: Container(
-          //height: 10,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(shape: BoxShape.circle),
           child: Image.asset(
@@ -78,47 +84,44 @@ class _PostWidgetState extends State<PostWidget> {
           ],
         ),
       ),
-      //  Row(
-      //   children: [
-      //     Container(
-      //       height: 50,
-      //       clipBehavior: Clip.hardEdge,
-      //       decoration: BoxDecoration(shape: BoxShape.circle),
-      //       child: Image.asset(
-      //         widget._post.userProfilePicture,
-      //         fit: BoxFit.contain,
-      //       ),
-      //     ),
-      //     SizedBox(
-      //       width: 10,
-      //     ),
-      //     Text(
-      //       widget._post.userName,
-      //       style: _textStyle.copyWith(fontWeight: FontWeight.bold),
-      //     )
-      //   ],
-      // ),
     );
   }
 
+  // Widget _postDetails() {
+  //   return Container(
+  //     height: MediaQuery.of(context).size.height * 0.5,
+  //     width: double.infinity,
+  //     decoration: BoxDecoration(
+  //       image: DecorationImage(
+  //           image: NetworkImage(widget._post.postPicture), fit: BoxFit.cover),
+  //     ),
+  //   );
+  // }
+
   Widget _postDetails() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.5,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: //AssetImage(widget._post.postPicture),
-                NetworkImage(widget._post.postPicture),
-            fit: BoxFit.cover),
+    return CarouselSlider.builder(
+      itemCount: listOfImages.length,
+      options: CarouselOptions(
+        height: MediaQuery.of(context).size.height * 0.5,
+        viewportFraction: 1,
       ),
+      itemBuilder: (context, index, realIndex) {
+        final image = listOfImages[index];
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.symmetric(horizontal: 1),
+          child: Image.network(
+            image,
+            fit: BoxFit.cover,
+          ),
+        );
+      },
     );
   }
 
   Widget _dateAndTime() {
     return Container(
-      //color: Colors.grey,
       width: 180,
-      //height: 200,
       child: ListTile(
         contentPadding: EdgeInsets.all(0),
         horizontalTitleGap: 1,
@@ -137,23 +140,6 @@ class _PostWidgetState extends State<PostWidget> {
         ),
       ),
     );
-    // Row(
-    //   children:  [
-    //     const Icon(
-    //       Icons.calendar_today_rounded,
-    //       size: 30,
-    //     ),
-    //     const SizedBox(width: 5),
-    //     Column(
-    //       children: [
-    //         Text(
-    //           'August 05, 2022',
-    //           style: TextStyle(fontSize: 17),
-    //         ),
-    //       ],
-    //     ),
-    //   ],
-    // );
   }
 
   Widget _address() {
@@ -175,30 +161,6 @@ class _PostWidgetState extends State<PostWidget> {
         ],
       ),
     );
-
-    // ListTile(
-    //   contentPadding: EdgeInsets.all(0),
-    //   horizontalTitleGap: 0,
-    //   leading:
-    //       // Container(
-    //       //   height: 40,
-    //       //   width: 40,
-    //       //   child: FittedBox(
-    //       //     clipBehavior: Clip.hardEdge,
-    //       //     fit: BoxFit.cover,
-    //       //     child: Image.asset('assets/images/Group.png'),
-    //       //   ),
-    //       // ),
-    //       Icon(
-    //     Icons.location_on,
-    //     size: 40,
-    //     color: iconsColor,
-    //   ),
-    //   title: Text(
-    //     widget._post.place,
-    //     style: _textStyle,
-    //   ),
-    // );
   }
 
   Widget _paying() {
@@ -223,10 +185,7 @@ class _PostWidgetState extends State<PostWidget> {
   Widget _bottomIcons() {
     String text = 'Voir détails';
     return Container(
-      //height: 50,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      //color: Colors.grey[200],
-
       child: Column(
         children: [
           Row(
